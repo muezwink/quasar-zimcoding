@@ -19,6 +19,13 @@
         {{ $q.lang }}
       </div>
     </section>
+    <section class="q-mb-xl">
+      <div class="text-h4">i18n - locale</div>
+      <q-separator class="q-my-md" />
+      <div>locale - {{ locale }}</div>
+      <div>hello - {{ $t('hello') }}</div>
+      <div>productName - {{ $t('productName') }}</div>
+    </section>
   </q-page>
 </template>
 <script>
@@ -38,7 +45,7 @@ console.log('langOptions: ', langOptions);
 <script setup>
 import { ref, watch } from 'vue';
 import { useQuasar } from 'quasar';
-
+import { useI18n } from 'vue-i18n';
 const $q = useQuasar();
 
 console.log($q.lang.isoName);
@@ -49,9 +56,14 @@ watch(lang, val => {
   console.log('val: ', val);
   import('../../node_modules/quasar/lang/' + val).then(lang => {
     $q.lang.set(lang.default);
+    locale.value = val;
     $q.localStorage.set('lang', val);
   });
 });
+
+const { t, locale } = useI18n();
+console.log('hello: ', t('hello'));
+console.log('productName: ', t('productName'));
 </script>
 
 <style lang="scss" scoped></style>
