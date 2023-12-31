@@ -28,42 +28,27 @@
     </section>
   </q-page>
 </template>
+
 <script>
-import languages from 'quasar/lang/index.json';
-console.log('languages: ', languages);
+// 재사용성을 위해 src/composables/language.js 로 분리
+// import languages from 'quasar/lang/index.json';
+// console.log('languages: ', languages);
 
-const appLanguages = languages.filter(lang =>
-  ['ko-KR', 'en-US'].includes(lang.isoName),
-);
-console.log('appLanguages: ', appLanguages);
-const langOptions = appLanguages.map(lang => ({
-  label: lang.nativeName,
-  value: lang.isoName,
-}));
-console.log('langOptions: ', langOptions);
+// const appLanguages = languages.filter(lang =>
+//   ['ko-KR', 'en-US'].includes(lang.isoName),
+// );
+// console.log('appLanguages: ', appLanguages);
+// const langOptions = appLanguages.map(lang => ({
+//   label: lang.nativeName,
+//   value: lang.isoName,
+// }));
+// console.log('langOptions: ', langOptions);
 </script>
+
 <script setup>
-import { ref, watch } from 'vue';
-import { useQuasar } from 'quasar';
-import { useI18n } from 'vue-i18n';
-const $q = useQuasar();
+import { useLanguage } from 'src/composables/language';
 
-console.log($q.lang.isoName);
-
-const lang = ref($q.lang.isoName);
-
-watch(lang, val => {
-  console.log('val: ', val);
-  import(`../../node_modules/quasar/lang/${val}.mjs`).then(lang => {
-    $q.lang.set(lang.default);
-    locale.value = val;
-    $q.localStorage.set('lang', val);
-  });
-});
-
-const { t, locale } = useI18n();
-console.log('hello: ', t('hello'));
-console.log('productName: ', t('productName'));
+const { langOptions, lang, locale } = useLanguage();
 </script>
 
 <style lang="scss" scoped></style>
